@@ -96,7 +96,12 @@ npm run dev
 - 数据库文件 `backend/app.db` 随项目生成，**无需手动建库建表**。
 - 首次启动自动初始化：默认管理员、两大板块 9 个分类、8 篇示例文章、2 条轮播。
 - 数据持久化：本地操作永久保存，重启不丢失。
-- 迁移 MySQL：修改 `backend/app/database/database.py` 中的 `SQLALCHEMY_DATABASE_URL` 即可，业务代码无需改动。
+- 迁移 MySQL（一键切换，业务代码无需改动）：
+  1. 安装 MySQL 8.0 并启动服务（默认端口 3306），用 root 登录执行：
+     `CREATE DATABASE life_focus CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`
+  2. 打开 `backend/app/database/database.py`，把 `DB_TYPE = "sqlite"` 改为 `DB_TYPE = "mysql"`，
+     并把 `MYSQL_PASSWORD = ""` 改成你安装 MySQL 时设的 root 密码。
+  3. 安装依赖（已含 `pymysql`），重启后端即可。首次启动会自动建表并写入默认数据。
 
 ## 9. 接口规范
 

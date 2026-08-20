@@ -1,0 +1,20 @@
+[Unit]
+Description=LifeFocus FastAPI Backend
+After=network.target mysql.service
+
+[Service]
+# 运行用户（Ubuntu 默认有 ubuntu 用户；若用其他用户请修改）
+User=ubuntu
+WorkingDirectory=/home/ubuntu/lifeFocus/backend
+
+# 读取环境变量（含 MYSQL_* 连接配置）
+EnvironmentFile=/home/ubuntu/lifeFocus/backend/.env
+
+# 仅绑定本机，由 Nginx 反代，更安全
+ExecStart=/home/ubuntu/lifeFocus/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

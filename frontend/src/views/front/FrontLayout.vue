@@ -3,7 +3,7 @@
     <AppHeader />
     <main class="content">
       <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
+        <transition name="page" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>
@@ -32,20 +32,19 @@ onMounted(async () => {
 
 <style scoped>
 .content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-  min-height: 60vh;
+  min-height: 62vh;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.25s ease;
+.page-enter-active {
+  transition: all 0.32s var(--ease);
 }
-.fade-enter-from {
+.page-leave-active {
+  transition: all 0.18s ease;
+}
+.page-enter-from {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(14px);
 }
-.fade-leave-to {
+.page-leave-to {
   opacity: 0;
 }
 </style>

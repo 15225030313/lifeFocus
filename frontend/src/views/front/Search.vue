@@ -1,11 +1,22 @@
 <template>
-  <div class="search-page">
-    <h2 class="page-title">“{{ keyword }}” 的搜索结果（{{ total }}）</h2>
-    <div class="card-grid" v-if="articles.length">
+  <div class="search-page page-wrap rise-in">
+    <header class="page-head">
+      <span class="head-sub">SEARCH</span>
+      <h1 class="head-title">
+        “{{ keyword }}”
+        <span class="count">共 {{ total }} 条结果</span>
+      </h1>
+    </header>
+
+    <div v-if="articles.length" class="card-grid">
       <ArticleCard v-for="a in articles" :key="a.id" :article="a" />
     </div>
-    <EmptyState v-else text="没有找到相关文章" />
+    <EmptyState v-else text="没有找到相关文章，换个关键词试试">
+      <el-button type="primary" round @click="$router.push('/')">返回首页</el-button>
+    </EmptyState>
+
     <el-pagination
+      v-if="total > pageSize"
       class="pager"
       background
       layout="prev, pager, next"
@@ -39,6 +50,7 @@ async function load() {
 function onPage(p: number) {
   page.value = p
   load()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 watch(
   () => route.query.q,
@@ -52,23 +64,49 @@ onMounted(load)
 </script>
 
 <style scoped>
-.page-title {
-  font-size: 20px;
-  margin: 0 0 20px;
+.search-page {
+  padding-top: 48px;
+  padding-bottom: 24px;
+}
+.page-head {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.head-sub {
+  font-size: 12px;
+  color: var(--primary);
+  letter-spacing: 4px;
+  font-weight: 700;
+}
+.head-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 12px 0 0;
+}
+.count {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-3);
+  margin-left: 10px;
 }
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 @media (max-width: 992px) {
   .card-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .pager {
   justify-content: center;
-  margin-top: 28px;
+  margin-top: 40px;
   display: flex;
 }
 </style>
